@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Forest-green rounded square fills the whole canvas — this is what
+       shows through on a maskable icon once the OS applies its own mask
+       shape (circle, squircle, etc). -->
+  <rect width="512" height="512" rx="96" fill="#4a7c59" />
+  <!-- The droplet mark itself is kept well inside the "safe zone" (a
+       centered circle at 80% of the icon's size) so it never gets clipped
+       when the OS masks the icon into a shape other than this rounded
+       square. -->
+  <path
+    d="M256,116 C256,116 356,290 356,340 C356,375 310,396 256,396 C202,396 156,375 156,340 C156,290 256,116 256,116 Z"
+    fill="#faf9f6"
+  />
+</svg>

@@ -1,0 +1,246 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design tokens as "R G B" triplets (not full color strings) so Tailwind's
+   rgb(var(--x) / <alpha-value>) pattern in tailwind.config.ts can still
+   apply opacity modifiers, e.g. bg-stone-ink/40 for modal backdrops. Dark
+   values aren't literal inverses — chosen to keep the same warm/forest
+   brand identity while giving each token a comfortable dark-background
+   contrast ratio (checked visually, not just computed). */
+:root {
+  --color-cream: 250 249 246;
+  --color-surface: 244 242 237;
+  --color-border-warm: 232 228 220;
+  --color-stone-ink: 28 25 23;
+  --color-stone-muted: 120 113 108;
+  --color-forest: 74 124 89;
+  --color-forest-light: 220 239 223;
+  --color-forest-dark: 45 90 61;
+  --text-scale: 1;
+}
+
+.dark {
+  --color-cream: 26 24 21;
+  --color-surface: 34 31 26;
+  --color-border-warm: 58 53 44;
+  --color-stone-ink: 240 237 230;
+  --color-stone-muted: 163 156 143;
+  --color-forest: 111 163 131;
+  --color-forest-light: 35 53 43;
+  --color-forest-dark: 143 191 160;
+}
+
+html {
+  font-size: calc(16px * var(--text-scale, 1));
+}
+
+/* Self-hosted (not Google Fonts): avoids a render-blocking third-party
+   round-trip to fonts.googleapis.com — found and fixed via the Lighthouse
+   O4 audit, see benchmark/results/lighthouse-summary.md. Single latin-subset
+   variable font file per family; Inter/Lora each cover both weights used. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/lora-latin.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/jetbrains-mono-latin.woff2') format('woff2');
+}
+
+body {
+  background-color: rgb(var(--color-cream));
+  color: rgb(var(--color-stone-ink));
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* { box-sizing: border-box; }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* DropletLoader animation: a droplet falls and dissolves into ripples on the water below, looping continuously. */
+@keyframes droplet-fall {
+  0% { transform: translateY(-90px); opacity: 0; }
+  12% { opacity: 1; }
+  46% { transform: translateY(0); opacity: 1; }
+  54% { transform: translateY(6px); opacity: 0; }
+  100% { transform: translateY(6px); opacity: 0; }
+}
+
+@keyframes droplet-ripple {
+  0%, 42% { transform: scale(0); opacity: 0; }
+  54% { transform: scale(0.35); opacity: 0.6; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.droplet-loader-fall {
+  animation: droplet-fall 1.8s ease-in infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.droplet-loader-ripple {
+  animation: droplet-ripple 1.8s ease-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.droplet-loader-ripple-delay {
+  animation-delay: 0.35s;
+}
+
+/* Driven by JS (see src/lib/settings.ts), not a raw prefers-reduced-motion
+   media query — this lets the Settings "Reduce motion" toggle fully
+   override the OS preference in either direction (force on, or force off
+   even if the OS prefers reduced motion), not just mirror it. */
+.motion-reduce .droplet-loader-fall,
+.motion-reduce .droplet-loader-ripple {
+  animation: none;
+}
+
+/* Styles the raw HTML execCommand produces inside the note body, since Tailwind classes can't reach into dangerouslySetInnerHTML content. */
+.note-content h1,
+.note-content h2,
+.note-content h3 {
+  font-family: 'Lora', Georgia, serif;
+  color: rgb(var(--color-stone-ink));
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.note-content h1 { font-size: 1.75rem; }
+.note-content h2 { font-size: 1.375rem; }
+.note-content h3 { font-size: 1.125rem; }
+
+.note-content p {
+  margin-bottom: 0.75rem;
+}
+
+.note-content ul,
+.note-content ol {
+  margin: 0.25rem 0 0.75rem 1.5rem;
+}
+.note-content ul { list-style: disc; }
+.note-content ol { list-style: decimal; }
+.note-content li { margin-bottom: 0.25rem; }
+.note-content li::marker { color: rgb(var(--color-stone-muted)); }
+
+.note-content blockquote {
+  border-left: 3px solid rgb(var(--color-forest));
+  padding-left: 1rem;
+  margin: 0.75rem 0;
+  color: rgb(var(--color-stone-muted));
+  font-style: italic;
+}
+
+.note-content pre {
+  background-color: rgb(var(--color-surface));
+  border: 1px solid rgb(var(--color-border-warm));
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8125rem;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.note-content code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85em;
+  background-color: rgb(var(--color-surface));
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+}
+.note-content pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.note-content hr {
+  border: none;
+  border-top: 1px solid rgb(var(--color-border-warm));
+  margin: 1.5rem 0;
+}
+
+.note-content a {
+  color: rgb(var(--color-forest));
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.note-todo {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.375rem;
+}
+.note-todo[data-indent='1'] { margin-left: 1.5rem; }
+.note-todo[data-indent='2'] { margin-left: 3rem; }
+.note-todo[data-indent='3'] { margin-left: 4.5rem; }
+.note-todo[data-indent='4'] { margin-left: 6rem; }
+.note-todo input[type='checkbox'] {
+  margin-top: 0.25rem;
+  accent-color: rgb(var(--color-forest));
+  cursor: pointer;
+}
+.note-todo-checked {
+  text-decoration: line-through;
+  color: rgb(var(--color-stone-muted));
+}
+
+.flashcard-scene {
+  perspective: 1200px;
+  cursor: pointer;
+}
+.flashcard-inner {
+  position: relative;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+}
+.flashcard-flipped {
+  transform: rotateY(180deg);
+}
+.flashcard-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid rgb(var(--color-border-warm));
+  background-color: rgb(var(--color-surface));
+  box-shadow: 0 1px 3px rgb(var(--color-stone-ink) / 0.08);
+  text-align: center;
+  backface-visibility: hidden;
+}
+.flashcard-back {
+  transform: rotateY(180deg);
+}

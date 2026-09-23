@@ -1,0 +1,45 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+node_modules
+
+# Build output
+dist
+dist-ssr
+*.local
+*.tsbuildinfo
+
+# Raw cached benchmark API responses (regenerable; benchmark/results/ holds the reported output)
+benchmark/cache
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Local-only files
+.claude/
+*.pptx
+para_check.txt
+dev-dist
+.vercel
+evaluation/
+benchmark/corpus/
+
+.vercel

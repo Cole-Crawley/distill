@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+node_modules
+dist
+dev-dist
+.claude
+*.pptx
+para_check.txt
+evaluation
+benchmark/cache
+benchmark/corpus
+*.tsbuildinfo
