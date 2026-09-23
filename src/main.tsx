@@ -1,6 +1,7 @@
 import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
 import AppShell from './components/AppShell'
 import InstallPrompt from './components/InstallPrompt'
 import HomePage from './pages/HomePage'
@@ -33,6 +34,7 @@ createRoot(document.getElementById('root')!).render(
             </Route>
           </Routes>
           <InstallPrompt />
+          <Analytics />
         </Suspense>
       </BrowserRouter>
     </SettingsProvider>
