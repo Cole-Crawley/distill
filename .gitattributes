@@ -1,0 +1,2 @@
+# Keep GitHub language stats about the app, not the saved Lighthouse reports
+benchmark/results/** linguist-generated
