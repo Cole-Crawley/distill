@@ -24,6 +24,9 @@ export class AIConfigError extends Error {}
 function friendlyApiErrorMessage(err: unknown): string {
   const status = err && typeof err === 'object' && 'status' in err ? (err as { status?: number }).status : undefined
 
+  if (status === 402) {
+    return "The live demo has used up this month's AI allowance, so new summaries and flashcards are paused until next month. Your notes and study sessions still work, or you can add your own Claude API key in Settings."
+  }
   if (status === 401) return "That API key wasn't accepted. Check it in Settings and try again."
   if (status === 429) return 'Claude is rate-limiting requests right now. Wait a moment and try again.'
   if (status && status >= 500) return "Claude's API is having trouble right now. Try again in a moment."

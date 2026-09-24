@@ -60,6 +60,19 @@ export async function POST(request: Request): Promise<Response> {
     body: JSON.stringify(body),
   })
 
+  // The account's monthly spend limit (or its credit) running out comes back as a 400.
+  // Turn it into a 402 so the app can say so plainly; the SDK won't retry a 402.
+  if (upstream.status === 400) {
+    const text = await upstream.text()
+    if (/usage limit|credit balance/i.test(text)) {
+      return Response.json(
+        { type: 'error', error: { type: 'demo_limit', message: 'The demo has reached its monthly AI allowance.' } },
+        { status: 402 }
+      )
+    }
+    return new Response(text, { status: 400, headers: { 'content-type': 'application/json' } })
+  }
+
   return new Response(upstream.body, {
     status: upstream.status,
     headers: { 'content-type': upstream.headers.get('content-type') ?? 'application/json' },
