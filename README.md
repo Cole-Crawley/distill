@@ -140,4 +140,4 @@ The progress page, drawn with hand-built SVG charts:
 
 The biggest lesson was that the problems that matter only show up when you use the real thing. Neither the misleading mastery score nor the XSS hole would have been caught by type checking or a quick click-through. Testing against real use, and being willing to change the structure when the evidence says so, made far more difference than any single feature.
 
-*Built by [Cole Crawley](https://colecrawley.vercel.app) for an MSc in Computer Science at the University of Lincoln.*
+*Built by [Cole Crawley](https://colecrawley.com) for an MSc in Computer Science at the University of Lincoln.*
